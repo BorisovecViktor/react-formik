@@ -63,6 +63,8 @@ const App = () => {
       validateOnChange={false}
     >
       {formik => {
+        formik.isSubmitting && setFormValues(null)
+
         return <Form>
           <div className='form-control'>
             <label htmlFor='name'>Name</label>
