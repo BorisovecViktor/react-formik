@@ -1,5 +1,11 @@
 import React from 'react';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
+import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FieldArray,
+} from 'formik';
 import * as yup from 'yup';
 import './App.scss';
 
@@ -8,13 +14,22 @@ import './App.scss';
 const initialValues = {
   name: 'Viktor',
   email: '',
-  channel: ''
+  channel: '',
+  comments: '',
+  address: '',
+  social: {
+    facebook: '',
+    twitter: ''
+  },
+  phoneNumbers: ['', ''],
+  phNumbers: ['']
 }
 
 const validationSchema = yup.object({
   name: yup.string().required('Required'),
   email: yup.string().email('Invalid email format').required('Required'),
-  channel: yup.string().required('Required')
+  channel: yup.string().required('Required'),
+  comments: yup.string().required('Required')
 })
 
 const onSubmit = values => {
@@ -27,6 +42,7 @@ const App = () => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      validateOnChange={false}
     >
       <Form>
         <div className='form-control'>
@@ -36,9 +52,9 @@ const App = () => {
             id='name'
             name='name'
           />
-          <div className='error'>
-            <ErrorMessage name='name' />
-          </div>
+          <ErrorMessage name='name'>
+            {error => <div className='error'>{error}</div>}
+          </ErrorMessage>
         </div>
         <div className='form-control'>
           <label htmlFor='email'>Email</label>
@@ -47,9 +63,9 @@ const App = () => {
             id='email'
             name='email'
           />
-          <div className='error'>
-            <ErrorMessage name='email' />
-          </div>
+          <ErrorMessage name='email'>
+            {error => <div className='error'>{error}</div>}
+          </ErrorMessage>
         </div>
         <div className='form-control'>
           <label htmlFor='channel'>Channel</label>
@@ -58,11 +74,69 @@ const App = () => {
             id='channel'
             name='channel'
           />
-          <div className='error'>
-            <ErrorMessage name='channel' />
-          </div>
+          <ErrorMessage name='channel'>
+            {error => <div className='error'>{error}</div>}
+          </ErrorMessage>
         </div>
-        <button type='submit'>Send</button>
+        <div className='form-control'>
+          <label htmlFor='comments'>Comments</label>
+          <Field
+            as='textarea'
+            id='comments'
+            name='comments'
+          />
+          <ErrorMessage name='comments'>
+            {error => <div className='error'>{error}</div>}
+          </ErrorMessage>
+        </div>
+        <div className='form-control'>
+          <label htmlFor='facebook'>Facebook profile</label>
+          <Field type='text' id='facebook' name='social.facebook' />
+        </div>
+
+        <div className='form-control'>
+          <label htmlFor='twitter'>Twitter profile</label>
+          <Field type='text' id='twitter' name='social.twitter' />
+        </div>
+        <div className='form-control'>
+          <label htmlFor='primaryPh'>Primary phone number</label>
+          <Field type='number' id='primaryPh' name='phoneNumbers[0]' />
+        </div>
+
+        <div className='form-control'>
+          <label htmlFor='secondaryPh'>Secondary phone number</label>
+          <Field type='number' id='secondaryPh' name='phoneNumbers[1]' />
+        </div>
+        <div className='form-control'>
+          <label>List of phone numbers</label>
+          <FieldArray name='phNumbers'>
+            {fieldArrayProps => {
+              const { push, remove, form } = fieldArrayProps
+              const { values } = form
+              const { phNumbers } = values
+              return (
+                <div>
+                  {phNumbers.map((phNumber, index) => (
+                    <div key={index} className='phone-wrapper'>
+                      <Field type='number' name={`phNumbers[${index}]`} />
+                      {index === 0 && (
+                        <button type='button' className='phone-button phone-button--add' onClick={() => push('')}>
+                          add
+                        </button>
+                      )}
+                      {index > 0 && (
+                        <button type='button' className='phone-button phone-button--del' onClick={() => remove(index)}>
+                          del
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )
+            }}
+          </FieldArray>
+        </div>
+        <button type='submit' className='phone-button phone-button--sbm'>Send</button>
       </Form>
     </Formik>
   );
