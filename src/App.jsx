@@ -36,7 +36,9 @@ const App = () => {
             id='name'
             name='name'
           />
-          <ErrorMessage name='name' />
+          <div className='error'>
+            <ErrorMessage name='name' />
+          </div>
         </div>
         <div className='form-control'>
           <label htmlFor='email'>Email</label>
@@ -45,7 +47,9 @@ const App = () => {
             id='email'
             name='email'
           />
-          <ErrorMessage name='email' />
+          <div className='error'>
+            <ErrorMessage name='email' />
+          </div>
         </div>
         <div className='form-control'>
           <label htmlFor='channel'>Channel</label>
@@ -54,7 +58,9 @@ const App = () => {
             id='channel'
             name='channel'
           />
-          <ErrorMessage name='channel' />
+          <div className='error'>
+            <ErrorMessage name='channel' />
+          </div>
         </div>
         <button type='submit'>Send</button>
       </Form>
