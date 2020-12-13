@@ -102,15 +102,29 @@ textarea {
     background: green;
   }
 
-  &--sbm {
+  &--sbm,
+  &--load {
     display: block;
-    width: 200px;
+    width: 100%;
     margin: 0 auto;
     border-radius: 5px;
+  }
+
+  &--sbm {
     background: blue;
+  }
+
+  &--load {
+    margin-bottom: 10px;
+    background: lightslategrey;
   }
 
   &:hover {
     opacity: 1;
+  }
+
+  &:disabled {
+    opacity: 0.2;
+    cursor: auto;
   }
 }
